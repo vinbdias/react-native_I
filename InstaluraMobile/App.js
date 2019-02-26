@@ -20,15 +20,33 @@ import {
 
 import Post from './src/components/Post';
 
+import FotosServiceFactory from './src/services/FotosServiceFactory';
+
 type Props = {};
 export default class App extends Component<Props> {
+
+  constructor(props) {
+
+    super(props)
+  
+    this.state = {
+      fotos: []   
+    }
+  }
+
+  componentDidMount = () => {
+    
+    FotosServiceFactory.listarFotos()
+      .then(resposta => resposta.json())
+      .then(json => this.setState({ fotos: json }))
+      .catch(error => console.log(error));
+  };
+  
+  
+  
   render() {
 
-    const fotos = [
-        {id: 1, usuario: 'rafael'},
-        {id: 2, usuario: 'alberto'},
-        {id: 3, usuario: 'vitor'}
-    ];
+    const { fotos } = this.state;           
 
     return (
       <FlatList style={{marginTop: 20}}
@@ -44,7 +62,7 @@ export default class App extends Component<Props> {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 20,
+        marginTop: 20
     }
 });
 
