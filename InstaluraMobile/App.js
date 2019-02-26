@@ -14,30 +14,37 @@ import {
   Text,
   View,
   Image,
-  Dimensions
+  Dimensions,
+  FlatList
 } from 'react-native';
 
-
-const width = Dimensions.get('screen').width,
-      height = Dimensions.get('screen').height;
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import Post from './src/components/Post';
 
 type Props = {};
 export default class App extends Component<Props> {
   render() {
+
+    const fotos = [
+        {id: 1, usuario: 'rafael'},
+        {id: 2, usuario: 'alberto'},
+        {id: 3, usuario: 'vitor'}
+    ];
+
     return (
-      <View> 
-        <Text>vinicius</Text>
-        <Image source={require('./resources/img/alura.jpg')} 
-          style={{ width, height }} />
-      </View>
+      <FlatList style={{marginTop: 20}}
+          keyExtractor={item => String(item.id)}
+          data={fotos}
+          renderItem={ ({item}) =>
+            <Post foto={item}/>
+          }
+      />
     );
   }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        marginTop: 20,
+    }
+});
 
