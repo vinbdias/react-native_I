@@ -29,7 +29,8 @@ export default class Post extends Component<Props> {
     super(props)
   
     this.state = {
-       foto: { ...this.props.foto }
+       foto: { ...this.props.foto },
+       valorComentario: ''
     };
   };
 
@@ -70,6 +71,26 @@ export default class Post extends Component<Props> {
     </View> : null
   }
 
+  adicionaComentario = () => {
+
+    if(this.state.valorComentario === '')
+      return;
+
+    const novaLista = [...this.state.foto.comentarios, {
+      id: this.state.valorComentario,
+      login: 'meuUsuario',
+      texto: this.state.valorComentario
+    }];
+
+    const fotoAtualizada = {
+      ...this.state.foto,
+      comentarios: novaLista
+    };
+
+    this.setState({ foto: fotoAtualizada, valorComentario: '' });
+    this.inputComentario.clear();
+  };
+
   render() {
 
       const { foto } = this.state;        
@@ -103,11 +124,15 @@ export default class Post extends Component<Props> {
 
                 <View style={styles.novoComentario}>
                   <TextInput style={styles.input}
-                    placeholder="Adicione um comentário..." />
-                  <Image style={styles.icone}
-                    source={require('../../resources/img/send.png')} />                  
-                </View>
+                    placeholder="Adicione um comentário..." 
+                    ref={input => this.inputComentario = input} 
+                    onChangeText={texto => this.setState({ valorComentario: texto })} />
 
+                  <TouchableOpacity onPress={this.adicionaComentario}>
+                    <Image style={styles.icone}
+                      source={require('../../resources/img/send.png')} />                  
+                  </TouchableOpacity>
+                </View>
 
               </View>
           </View>
